@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_web_navigation/core.dart';
 
 /// parseRouteInformation will convert the given route information into parsed data to pass to RouterDelegate.
