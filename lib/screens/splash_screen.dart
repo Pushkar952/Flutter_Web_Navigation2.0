@@ -11,6 +11,8 @@ class SplashScreen extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.all(80),
           child: Image(
+            width: 200,
+            height: 150,
             image: AssetImage(AllImages.flutterLogo),
           ),
         ),

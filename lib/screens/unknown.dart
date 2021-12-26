@@ -5,6 +5,20 @@ class UnknownRoute extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      body: Center(
+        child: Container(
+          alignment: Alignment.center,
+          height: 80,
+          width: 300,
+          decoration: BoxDecoration(
+              color: Colors.blue, borderRadius: BorderRadius.circular(10)),
+          child: const Text(
+            'Route Not Found!!!',
+            style: TextStyle(color: Colors.white, fontSize: 25),
+          ),
+        ),
+      ),
+    );
   }
 }

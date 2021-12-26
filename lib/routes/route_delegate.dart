@@ -31,8 +31,13 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
       if (isLoggedIn == null) {
         return RoutePath.otherPage(RouteData.splash.name);
       } else if (isLoggedIn == true) {
-        if (pathName == "/") return RoutePath.home(pathName);
-        return RoutePath.otherPage(pathName);
+        if (pathName != RouteData.home.name) {
+          return RoutePath.otherPage(pathName);
+        } else {
+          return RoutePath.home(pathName);
+        }
+
+        // return RoutePath.otherPage(pathName);
       } else {
         return RoutePath.home(RouteData.login.name);
       }
@@ -54,12 +59,19 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
                   key: ValueKey('$pathName'),
                 ),
               )
-            : MaterialPage(
-                key: ValueKey(RouteData.login.name),
-                child: Login(
-                  key: ValueKey('$pathName'),
-                ),
-              ),
+            : (isLoggedIn != null)
+                ? MaterialPage(
+                    key: ValueKey(RouteData.login.name),
+                    child: Login(
+                      key: ValueKey('$pathName'),
+                    ),
+                  )
+                : MaterialPage(
+                    key: ValueKey(RouteData.splash.name),
+                    child: SplashScreen(
+                      key: ValueKey('$pathName'),
+                    ),
+                  ),
         if (pathName == RouteData.unkownRoute.name)
           MaterialPage(
             key: ValueKey(RouteData.unkownRoute.name),
@@ -119,9 +131,8 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
   /// setNewRoutePath is called when a new route has been pushed to the application.
   @override
   Future<void> setNewRoutePath(RoutePath configuration) async {
-    isLoggedIn ??= false;
     if (configuration.isUnknown) {
-      isLoggedIn = false;
+      isLoggedIn == null;
       isError = true;
       return;
     }
@@ -155,7 +166,7 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
     }
   }
 
-  /// This function sets url path
+  /// setPathName  sets url path
   void setPathName(String path, {bool loggedIn = true}) {
     pathName = path;
     isLoggedIn = loggedIn;
@@ -164,15 +175,20 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
 
   /// Initializing router delegate to handle login status
   _init() async {
-    isLoggedIn = await HiveDataStorageService.getUser();
+    String _user = await HiveDataStorageService.getUser();
+    if (_user.isNotEmpty) {
+      isLoggedIn = true;
+    } else {
+      isLoggedIn = false;
+    }
 
-    if (isLoggedIn == null) {
-      pathName = RouteData.unkownRoute.name;
-      isError = true;
-    } else if (isLoggedIn == false) {
+    if (isLoggedIn == false) {
       pathName = RouteData.login.name;
       isError = false;
     } else if (pathName == null || pathName!.isEmpty) {
+      pathName = RouteData.unkownRoute.name;
+      isError = true;
+    } else {
       pathName = RouteData.home.name;
       isError = false;
     }

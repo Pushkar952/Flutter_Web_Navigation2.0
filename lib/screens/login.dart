@@ -35,12 +35,18 @@ class Login extends StatelessWidget {
                 width: 350,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: TextField(
+                  child: TextFormField(
+                    validator: (String? str) {
+                      if (str!.isEmpty) {
+                        return "name can't be empty.";
+                      }
+                    },
                     controller: emailController,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     decoration: const InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: 'Email',
-                        hintText: 'Enter valid email id as abc@gmail.com'),
+                        labelText: 'User Name',
+                        hintText: 'Enter user name. '),
                   ),
                 ),
               ),
@@ -58,13 +64,6 @@ class Login extends StatelessWidget {
                           hintText: 'Enter secure password'),
                     ),
                   )),
-              TextButton(
-                onPressed: () {},
-                child: const Text(
-                  'Forgot Password',
-                  style: TextStyle(color: Colors.blue, fontSize: 15),
-                ),
-              ),
               Container(
                 height: 50,
                 width: 250,
@@ -72,7 +71,7 @@ class Login extends StatelessWidget {
                     color: Colors.blue,
                     borderRadius: BorderRadius.circular(20)),
                 child: TextButton(
-                  onPressed: _logIn(),
+                  onPressed: () => _logIn(),
                   child: const Text(
                     'Login',
                     style: TextStyle(color: Colors.white, fontSize: 25),
@@ -88,7 +87,7 @@ class Login extends StatelessWidget {
 
   _logIn() async {
     if (_formKey.currentState!.validate()) {
-      await HiveDataStorageService.logUser();
+      await HiveDataStorageService.logUser(emailController.text);
       AppRouterDelegate().setPathName(RouteData.home.name);
     }
   }

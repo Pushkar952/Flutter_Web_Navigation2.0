@@ -10,13 +10,17 @@ class HiveDataStorageService {
   HiveDataStorageService._();
 
   /// Method to set User
-  static logUser() async {
-    await _hiveDataProvider.insertData("user", {"loggedIn": true});
+  static logUser(String email) async {
+    await _hiveDataProvider.insertData("user", {"loggedIn": email});
   }
 
   /// Method to get User
   static getUser() async {
     Map response = await _hiveDataProvider.readData("user");
-    return ((response.isNotEmpty ? response["user"] : false) ?? false);
+    return ((response.isNotEmpty ? response["loggedIn"] : '') ?? '');
+  }
+
+  static logOutUser() async {
+    await _hiveDataProvider.deleteData("user");
   }
 }
