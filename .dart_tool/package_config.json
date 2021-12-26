@@ -38,6 +38,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "crypto",
+      "rootUri": "file:///Users/pushkarkumar/.pub-cache/hosted/pub.dartlang.org/crypto-3.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "cupertino_icons",
       "rootUri": "file:///Users/pushkarkumar/.pub-cache/hosted/pub.dartlang.org/cupertino_icons-1.0.4",
       "packageUri": "lib/",
@@ -64,6 +70,24 @@
     {
       "name": "flutter_test",
       "rootUri": "file:///Users/pushkarkumar/Desktop/flutter/packages/flutter_test",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "flutter_web_plugins",
+      "rootUri": "file:///Users/pushkarkumar/Desktop/flutter/packages/flutter_web_plugins",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "hive",
+      "rootUri": "file:///Users/pushkarkumar/.pub-cache/hosted/pub.dartlang.org/hive-2.0.5",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "js",
+      "rootUri": "file:///Users/pushkarkumar/.pub-cache/hosted/pub.dartlang.org/js-0.6.3",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -140,6 +164,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "url_strategy",
+      "rootUri": "file:///Users/pushkarkumar/.pub-cache/hosted/pub.dartlang.org/url_strategy-0.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "vector_math",
       "rootUri": "file:///Users/pushkarkumar/.pub-cache/hosted/pub.dartlang.org/vector_math-2.1.1",
       "packageUri": "lib/",
@@ -152,7 +182,7 @@
       "languageVersion": "2.15"
     }
   ],
-  "generated": "2021-12-19T09:49:50.404676Z",
+  "generated": "2021-12-26T08:35:43.266316Z",
   "generator": "pub",
   "generatorVersion": "2.15.1"
 }

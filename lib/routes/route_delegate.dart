@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_web_navigation/services/hive_storage_service.dart';
 import '../core.dart';
 
-/// BandConnectRouterDelegate includes the parsed result from RoutesInformationParser
-class BandConnectRouterDelegate extends RouterDelegate<RoutePath>
+/// AppRouterDelegate includes the parsed result from RoutesInformationParser
+class AppRouterDelegate extends RouterDelegate<RoutePath>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<RoutePath> {
-  static final BandConnectRouterDelegate _instance =
-      BandConnectRouterDelegate._();
+  static final AppRouterDelegate _instance = AppRouterDelegate._();
 
   String? pathName;
   bool isError = false;
@@ -14,9 +14,9 @@ class BandConnectRouterDelegate extends RouterDelegate<RoutePath>
 
   /// Keeps the app stack
   late List<Page> _stack = [];
-  factory BandConnectRouterDelegate() => _instance;
+  factory AppRouterDelegate() => _instance;
 
-  BandConnectRouterDelegate._() {
+  AppRouterDelegate._() {
     _init();
   }
 
@@ -71,7 +71,7 @@ class BandConnectRouterDelegate extends RouterDelegate<RoutePath>
   List<Page> get _splashStack => [
         MaterialPage(
           key: ValueKey(RouteData.splash.name),
-          child: const SplashScreeen(),
+          child: const SplashScreen(),
         ),
       ];
 
@@ -164,8 +164,18 @@ class BandConnectRouterDelegate extends RouterDelegate<RoutePath>
 
   /// Initializing router delegate to handle login status
   _init() async {
-    isLoggedIn = false;
+    isLoggedIn = await HiveDataStorageService.getUser();
 
+    if (isLoggedIn == null) {
+      pathName = RouteData.unkownRoute.name;
+      isError = true;
+    } else if (isLoggedIn == false) {
+      pathName = RouteData.login.name;
+      isError = false;
+    } else if (pathName == null || pathName!.isEmpty) {
+      pathName = RouteData.home.name;
+      isError = false;
+    }
     notifyListeners();
   }
 }
