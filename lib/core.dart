@@ -5,7 +5,7 @@ export 'services/custom_navigation_key.dart';
 export 'screens/unknown.dart';
 export 'screens/splash_screen.dart';
 export 'screens/login.dart';
-export 'screens/home_screen.dart';
+export 'screens/profile_screen.dart';
 
 //Routes
 export 'routes/route_path.dart';

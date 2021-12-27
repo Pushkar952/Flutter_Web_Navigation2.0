@@ -6,19 +6,16 @@ import '../core.dart';
 class AppRouterDelegate extends RouterDelegate<RoutePath>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<RoutePath> {
   static final AppRouterDelegate _instance = AppRouterDelegate._();
+  factory AppRouterDelegate() => _instance;
 
+  AppRouterDelegate._();
   String? pathName;
   bool isError = false;
 
-  bool? isLoggedIn;
+  bool isLoggedIn = false;
 
   /// Keeps the app stack
   late List<Page> _stack = [];
-  factory AppRouterDelegate() => _instance;
-
-  AppRouterDelegate._() {
-    _init();
-  }
 
   /// currentConfiguration detects a route information may have changed as a result of rebuild.
   @override
@@ -28,16 +25,12 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
     }
 
     if (pathName == null) {
-      if (isLoggedIn == null) {
-        return RoutePath.otherPage(RouteData.splash.name);
-      } else if (isLoggedIn == true) {
-        if (pathName != RouteData.home.name) {
+      if (isLoggedIn == true) {
+        if (pathName != RouteData.profile.name) {
           return RoutePath.otherPage(pathName);
         } else {
           return RoutePath.home(pathName);
         }
-
-        // return RoutePath.otherPage(pathName);
       } else {
         return RoutePath.home(RouteData.login.name);
       }
@@ -50,40 +43,40 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
   GlobalKey<NavigatorState> get navigatorKey =>
       CustomNavigationKeys.navigatorKey;
 
-  /// App Stack - Login and other screens
+  /// App Stack - Profile screen and other known and unknown routes
   List<Page> get _appStack => [
-        (isLoggedIn == true)
-            ? MaterialPage(
-                key: ValueKey(RouteData.home.name),
-                child: HomeScreen(
-                  key: ValueKey('$pathName'),
-                ),
-              )
-            : (isLoggedIn != null)
-                ? MaterialPage(
-                    key: ValueKey(RouteData.login.name),
-                    child: Login(
-                      key: ValueKey('$pathName'),
-                    ),
-                  )
-                : MaterialPage(
-                    key: ValueKey(RouteData.splash.name),
-                    child: SplashScreen(
-                      key: ValueKey('$pathName'),
-                    ),
-                  ),
-        if (pathName == RouteData.unkownRoute.name)
+        if (pathName!.contains(RouteData.profile.name))
+          MaterialPage(
+            key: ValueKey(RouteData.profile.name),
+            child: ProfileScreen(
+              key: ValueKey('$pathName'),
+              routeName: pathName ?? RouteData.profile.name,
+            ),
+          )
+        else
           MaterialPage(
             key: ValueKey(RouteData.unkownRoute.name),
             child: const UnknownRoute(),
           )
       ];
 
+  /// Auth route
+  List<Page> get _authStack => [
+        MaterialPage(
+          key: ValueKey(RouteData.login.name),
+          child: Login(
+            key: ValueKey('$pathName'),
+          ),
+        ),
+      ];
+
   /// Splash stack
   List<Page> get _splashStack => [
         MaterialPage(
           key: ValueKey(RouteData.splash.name),
-          child: const SplashScreen(),
+          child: SplashScreen(
+            callback: (route) => setPathName(route),
+          ),
         ),
       ];
 
@@ -91,8 +84,10 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
   Widget build(BuildContext context) {
     if (pathName == null) {
       _stack = _splashStack;
-    } else {
+    } else if (isLoggedIn) {
       _stack = _appStack;
+    } else {
+      _stack = _authStack;
     }
 
     return Navigator(
@@ -108,40 +103,22 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
     );
   }
 
-  /// Set login status
-  /// - [true] - logged in
-  /// - [false] - logged out
-  void loggedIn(value) {
-    isLoggedIn = value;
-
-    if (isLoggedIn == null) {
-      pathName = RouteData.unkownRoute.name;
-      isError = true;
-    } else if (isLoggedIn == false) {
-      pathName = RouteData.login.name;
-      isError = false;
-    } else {
-      pathName = RouteData.home.name;
-      isError = false;
-    }
-
-    notifyListeners();
-  }
-
   /// setNewRoutePath is called when a new route has been pushed to the application.
   @override
   Future<void> setNewRoutePath(RoutePath configuration) async {
-    if (configuration.isUnknown) {
-      isLoggedIn == null;
-      isError = true;
-      return;
+    String _user = await HiveDataStorageService.getUser();
+    if (_user.isNotEmpty) {
+      isLoggedIn = true;
+    } else {
+      isLoggedIn = false;
     }
 
     if (configuration.isOtherPage) {
       if (configuration.pathName != null) {
         if (isLoggedIn == true) {
+          /// If logged in
           if (configuration.pathName == RouteData.login.name) {
-            pathName = RouteData.home.name;
+            pathName = RouteData.profile.name;
             isError = false;
             notifyListeners();
           } else {
@@ -170,28 +147,6 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
   void setPathName(String path, {bool loggedIn = true}) {
     pathName = path;
     isLoggedIn = loggedIn;
-    notifyListeners();
-  }
-
-  /// Initializing router delegate to handle login status
-  _init() async {
-    String _user = await HiveDataStorageService.getUser();
-    if (_user.isNotEmpty) {
-      isLoggedIn = true;
-    } else {
-      isLoggedIn = false;
-    }
-
-    if (isLoggedIn == false) {
-      pathName = RouteData.login.name;
-      isError = false;
-    } else if (pathName == null || pathName!.isEmpty) {
-      pathName = RouteData.unkownRoute.name;
-      isError = true;
-    } else {
-      pathName = RouteData.home.name;
-      isError = false;
-    }
     notifyListeners();
   }
 }

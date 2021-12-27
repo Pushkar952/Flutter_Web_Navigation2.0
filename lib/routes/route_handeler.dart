@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_web_navigation/screens/home_screen.dart';
+import 'package:flutter_web_navigation/screens/profile_screen.dart';
 
 /// class to handle render widget and pathname
 class RenderData {
@@ -16,7 +16,7 @@ enum RouteData {
   /// For routes that are parsed but not data is found for them eg. /user/?userName=abc and abc doesnt exist
   notFound,
 
-  home,
+  profile,
   login,
   splash
 }
@@ -48,7 +48,7 @@ class RouteHandeler {
 
         if (routeData != RouteData.notFound) {
           switch (routeData) {
-            case RouteData.home:
+            case RouteData.profile:
 
               /// Handle query params
               if (uri.queryParameters.isNotEmpty &&
@@ -57,14 +57,18 @@ class RouteHandeler {
 
                 if (idPatient != null) {
                   return RenderData(
-                    widget: const HomeScreen(),
+                    widget: ProfileScreen(
+                      routeName: routeName,
+                    ),
                   );
                 }
               }
 
               return RenderData(
-                widget: const HomeScreen(),
-                pathName: RouteData.home.name,
+                widget: ProfileScreen(
+                  routeName: routeName,
+                ),
+                pathName: RouteData.profile.name,
               ); // PatientScreen
 
             default:
