@@ -1,0 +1,28 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+/build/web
+build/.last_build_id
+build/c075001b96339384a97db4862b8ab8db.cache.dill.track.dill
+build/flutter_assets/FontManifest.json
+build/flutter_assets/NOTICES
+pubspec.lock
+.vscode/
