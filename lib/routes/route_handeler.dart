@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_web_navigation/screens/home_screen.dart';
+import 'package:flutter_web_navigation/screens/more.dart';
 import 'package:flutter_web_navigation/screens/profile_screen.dart';
+import 'package:flutter_web_navigation/screens/settings_screen.dart';
 
 /// class to handle render widget and pathname
 class RenderData {
@@ -18,7 +21,10 @@ enum RouteData {
 
   profile,
   login,
-  splash
+  splash,
+  home,
+  more,
+  settings
 }
 
 /// Class to handle route path related informations
@@ -48,35 +54,43 @@ class RouteHandeler {
 
         if (routeData != RouteData.notFound) {
           switch (routeData) {
-            case RouteData.profile:
-
-              /// Handle query params
-              if (uri.queryParameters.isNotEmpty &&
-                  uri.queryParameters.containsKey("id")) {
-                int? idPatient = int.tryParse(uri.queryParameters["id"]!);
-
-                if (idPatient != null) {
-                  return RenderData(
-                    widget: ProfileScreen(
-                      routeName: routeName,
-                    ),
-                  );
-                }
-              }
-
+            case RouteData.home:
               return RenderData(
-                widget: ProfileScreen(
+                widget: Home(
                   routeName: routeName,
                 ),
-                pathName: RouteData.profile.name,
-              ); // PatientScreen
+              );
+
+            case RouteData.profile:
+              return RenderData(
+                widget: Profile(
+                  routeName: routeName,
+                ),
+              );
+
+            case RouteData.settings:
+              return RenderData(
+                widget: Settings(
+                  routeName: routeName,
+                ),
+              );
+
+            case RouteData.more:
+              return RenderData(
+                widget: More(
+                  routeName: routeName,
+                ),
+              );
 
             default:
+              return RenderData(
+                widget: Home(
+                  routeName: routeName,
+                ),
+              );
           }
         }
       }
     }
-
-    return null;
   }
 }
