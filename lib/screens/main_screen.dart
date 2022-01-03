@@ -16,8 +16,6 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  final GlobalKey<ScaffoldState> _key = CustomNavigationKeys.homeScaffoldKey;
-
   Widget? render;
 
   @override
@@ -52,33 +50,12 @@ class _MainScreenState extends State<MainScreen> {
                 }),
           ),
           Expanded(
-            child: Center(
-              child: render ??
-                  Text(
-                    widget.routeName,
-                    style: const TextStyle(color: Colors.blue, fontSize: 16),
-                  ),
-            ),
+            child:
+                Center(child: RouteHandeler().getRouteWidget(widget.routeName)),
           ),
         ],
       ),
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    RenderData? renderData;
-    renderData = RouteHandeler().getRouteWidget(widget.routeName, _key);
-
-    if (renderData?.pathName != null) {
-      WidgetsBinding.instance?.addPostFrameCallback((duration) {
-        String pathName = renderData?.pathName ?? RouteData.home.name;
-        AppRouterDelegate().setPathName(pathName);
-      });
-    }
-    render = renderData?.widget;
   }
 
   _logOut() async {

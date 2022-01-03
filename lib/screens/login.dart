@@ -88,7 +88,7 @@ class Login extends StatelessWidget {
   _logIn() async {
     if (_formKey.currentState!.validate()) {
       await HiveDataStorageService.logUser(emailController.text);
-      AppRouterDelegate().setPathName(RouteData.profile.name);
+      AppRouterDelegate().setPathName(RouteData.home.name);
     }
   }
 }

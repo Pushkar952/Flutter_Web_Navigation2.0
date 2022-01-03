@@ -57,9 +57,9 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
   /// Auth route
   List<Page> get _authStack => [
         MaterialPage(
-          key: ValueKey(RouteData.login.name),
+          key: const ValueKey('login'),
           child: Login(
-            key: ValueKey('$pathName'),
+            key: const ValueKey('login'),
           ),
         ),
       ];
@@ -67,31 +67,32 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
   /// Splash stack
   List<Page> get _splashStack => [
         MaterialPage(
-          key: ValueKey(RouteData.splash.name),
-          child: SplashScreen(callback: (route) {
-            if (route == RouteData.login.name) {
-              setPathName(route, loggedIn: false);
-            } else {
-              setPathName(route);
-            }
-          }),
+          key: const ValueKey('splash'),
+          child: SplashScreen(
+              key: const ValueKey('splash'),
+              callback: (route) {
+                if (route == RouteData.login.name) {
+                  setPathName(route, loggedIn: false);
+                } else {
+                  setPathName(route);
+                }
+              }),
         ),
       ];
 
   /// UnKnownRoute Stack
   List<Page> get _unknownRoute => [
-        MaterialPage(
-          key: ValueKey(RouteData.unkownRoute.name),
-          child: const UnknownRoute(),
+        const MaterialPage(
+          key: ValueKey('unknown'),
+          child: UnknownRoute(
+            key: ValueKey('unknown'),
+          ),
         )
       ];
 
   @override
   Widget build(BuildContext context) {
-    print("isLoggedIn===> ${isLoggedIn}");
-    if (pathName == null ||
-        pathName == RouteData.splash.name ||
-        isLoggedIn == null) {
+    if (pathName == null || pathName == RouteData.splash.name) {
       _stack = _splashStack;
     } else if (isLoggedIn != null && isLoggedIn == true) {
       _stack = _appStack;
@@ -118,7 +119,7 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
   @override
   Future<void> setNewRoutePath(RoutePath configuration) async {
     pathName = configuration.pathName;
-    // notifyListeners();
+    notifyListeners();
 
     if (configuration.isOtherPage) {
       if (configuration.pathName != null) {
@@ -143,10 +144,6 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
         isError = true;
         notifyListeners();
       }
-      if (isLoggedIn == false) {
-        pathName = RouteData.login.name;
-        notifyListeners();
-      }
     } else {
       pathName = "/";
     }
@@ -155,9 +152,8 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
   /// setPathName  sets url path
   void setPathName(String path, {bool loggedIn = true}) {
     pathName = path;
-    setNewRoutePath(RoutePath.otherPage(pathName));
-
     isLoggedIn = loggedIn;
+    setNewRoutePath(RoutePath.otherPage(pathName));
     notifyListeners();
   }
 

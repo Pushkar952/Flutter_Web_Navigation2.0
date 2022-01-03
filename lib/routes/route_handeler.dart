@@ -3,14 +3,7 @@ import 'package:flutter_web_navigation/screens/home_screen.dart';
 import 'package:flutter_web_navigation/screens/more.dart';
 import 'package:flutter_web_navigation/screens/profile_screen.dart';
 import 'package:flutter_web_navigation/screens/settings_screen.dart';
-
-/// class to handle render widget and pathname
-class RenderData {
-  late Widget widget;
-  String? pathName;
-
-  RenderData({this.pathName, required this.widget});
-}
+import 'package:flutter_web_navigation/screens/unknown.dart';
 
 enum RouteData {
   /// For routes for which we want to show unkown page that are not being parsed
@@ -36,8 +29,7 @@ class RouteHandeler {
   /// Returns [WidgetToRender, PathName]
   /// [WidgetToRender] - Renders specified widget
   /// [PathName] - Re-directs to [PathName] if invalid path is entered
-  RenderData? getRouteWidget(
-      String? routeName, GlobalKey<ScaffoldState> scaffoldKey) {
+  Widget getRouteWidget(String? routeName) {
     RouteData routeData;
 
     if (routeName != null) {
@@ -55,42 +47,40 @@ class RouteHandeler {
         if (routeData != RouteData.notFound) {
           switch (routeData) {
             case RouteData.home:
-              return RenderData(
-                widget: Home(
-                  routeName: routeName,
-                ),
+              return Home(
+                routeName: routeName,
               );
 
             case RouteData.profile:
-              return RenderData(
-                widget: Profile(
-                  routeName: routeName,
-                ),
+              return Profile(
+                routeName: routeName,
               );
 
             case RouteData.settings:
-              return RenderData(
-                widget: Settings(
-                  routeName: routeName,
-                ),
+              return Settings(
+                routeName: routeName,
               );
 
             case RouteData.more:
-              return RenderData(
-                widget: More(
-                  routeName: routeName,
-                ),
+              return More(
+                routeName: routeName,
               );
 
             default:
-              return RenderData(
-                widget: Home(
-                  routeName: routeName,
-                ),
+              return Home(
+                routeName: routeName,
               );
           }
+        } else {
+          return const UnknownRoute();
         }
+      } else {
+        return Home(
+          routeName: routeName,
+        );
       }
+    } else {
+      return const UnknownRoute();
     }
   }
 }
