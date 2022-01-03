@@ -1,5 +1,6 @@
 //Services
 export 'services/custom_navigation_key.dart';
+export 'services/split_route_params.dart';
 
 //Screens
 export 'screens/unknown.dart';

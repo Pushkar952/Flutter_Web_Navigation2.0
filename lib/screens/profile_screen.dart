@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../core.dart';
+
 class Profile extends StatelessWidget {
   final String routeName;
   const Profile({
@@ -9,10 +11,12 @@ class Profile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    return Center(
       child: Text(
-        "Profile Screen",
-        style: TextStyle(color: Colors.blue, fontSize: 16),
+        getRouteParams(routeName).length > 1
+            ? "Profile Screen with param ${getRouteParams(routeName)[1]}"
+            : "Profile Screen",
+        style: const TextStyle(color: Colors.blue, fontSize: 16),
       ),
     );
   }

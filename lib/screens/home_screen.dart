@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../core.dart';
+
 class Home extends StatelessWidget {
   final String routeName;
 
@@ -10,10 +12,12 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    return Center(
       child: Text(
-        "Home Screen",
-        style: TextStyle(color: Colors.blue, fontSize: 16),
+        getRouteParams(routeName).length > 1
+            ? "Home Screen with param  ${getRouteParams(routeName)[1]}"
+            : "Home Screen",
+        style: const TextStyle(color: Colors.blue, fontSize: 16),
       ),
     );
   }

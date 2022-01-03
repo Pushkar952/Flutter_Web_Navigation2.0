@@ -8,9 +8,7 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
   static final AppRouterDelegate _instance = AppRouterDelegate._();
   factory AppRouterDelegate() => _instance;
 
-  AppRouterDelegate._() {
-    _init();
-  }
+  AppRouterDelegate._();
   String? pathName;
   bool isError = false;
 
@@ -25,17 +23,8 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
     if (isError) {
       return RoutePath.unknown();
     }
+    if (pathName == null) return RoutePath.home('splash'); //main
 
-    if (pathName == null) {
-      if (isLoggedIn == null) {
-        return RoutePath.otherPage(RouteData.splash.name);
-      } else if (isLoggedIn == true) {
-        if (pathName == "/") return RoutePath.home(pathName);
-        return RoutePath.otherPage(pathName);
-      } else {
-        return RoutePath.otherPage(RouteData.login.name);
-      }
-    }
     return RoutePath.otherPage(pathName);
   }
 
@@ -48,7 +37,6 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
         MaterialPage(
           key: const ValueKey('home'),
           child: MainScreen(
-            key: const ValueKey('home'),
             routeName: pathName ?? RouteData.home.name,
           ),
         )
@@ -58,25 +46,15 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
   List<Page> get _authStack => [
         MaterialPage(
           key: const ValueKey('login'),
-          child: Login(
-            key: const ValueKey('login'),
-          ),
+          child: Login(),
         ),
       ];
 
   /// Splash stack
   List<Page> get _splashStack => [
-        MaterialPage(
-          key: const ValueKey('splash'),
-          child: SplashScreen(
-              key: const ValueKey('splash'),
-              callback: (route) {
-                if (route == RouteData.login.name) {
-                  setPathName(route, loggedIn: false);
-                } else {
-                  setPathName(route);
-                }
-              }),
+        const MaterialPage(
+          key: ValueKey('splash'),
+          child: SplashScreen(),
         ),
       ];
 
@@ -84,20 +62,19 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
   List<Page> get _unknownRoute => [
         const MaterialPage(
           key: ValueKey('unknown'),
-          child: UnknownRoute(
-            key: ValueKey('unknown'),
-          ),
+          child: UnknownRoute(),
         )
       ];
 
   @override
   Widget build(BuildContext context) {
-    if (pathName == null || pathName == RouteData.splash.name) {
+    if (pathName == null ||
+        pathName == RouteData.splash.name ||
+        isLoggedIn == null) {
       _stack = _splashStack;
-    } else if (isLoggedIn != null && isLoggedIn == true) {
+    } else if (isLoggedIn == true) {
       _stack = _appStack;
-    } else if (pathName == RouteData.login.name &&
-        (isLoggedIn != null && isLoggedIn == false)) {
+    } else if ((isLoggedIn == false)) {
       _stack = _authStack;
     } else {
       _stack = _unknownRoute;
@@ -108,7 +85,8 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
       pages: _stack,
       onPopPage: (route, result) {
         if (!route.didPop(result)) return false;
-        isError = false;
+        pathName = null;
+        // isError = false;
         notifyListeners();
         return true;
       },
@@ -118,8 +96,13 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
   /// setNewRoutePath is called when a new route has been pushed to the application.
   @override
   Future<void> setNewRoutePath(RoutePath configuration) async {
+    String _user = await HiveDataStorageService.getUser();
+    if (_user.isNotEmpty) {
+      isLoggedIn = true;
+    } else {
+      isLoggedIn = false;
+    }
     pathName = configuration.pathName;
-    notifyListeners();
 
     if (configuration.isOtherPage) {
       if (configuration.pathName != null) {
@@ -128,25 +111,25 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
           if (configuration.pathName == RouteData.login.name) {
             pathName = RouteData.home.name;
             isError = false;
-            notifyListeners();
           } else {
-            pathName = configuration.pathName;
+            pathName = configuration.pathName != RouteData.login.name
+                ? configuration.pathName
+                : RouteData.home.name;
             isError = false;
-            notifyListeners();
           }
         } else {
           pathName = RouteData.login.name;
+
+          isError = false;
         }
-        isError = false;
-        notifyListeners();
       } else {
         pathName = configuration.pathName;
-        isError = true;
-        notifyListeners();
+        isError = false;
       }
     } else {
       pathName = "/";
     }
+    notifyListeners();
   }
 
   /// setPathName  sets url path
@@ -154,32 +137,6 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
     pathName = path;
     isLoggedIn = loggedIn;
     setNewRoutePath(RoutePath.otherPage(pathName));
-    notifyListeners();
-  }
-
-  /// Initializing router delegate to handle login status
-  _init() async {
-    String _user = await HiveDataStorageService.getUser();
-    if (_user.isNotEmpty) {
-      isLoggedIn = true;
-    } else {
-      isLoggedIn = false;
-    }
-
-    if (_user.isNotEmpty) {
-      pathName = RouteData.home.name;
-      isError = false;
-    } else if (isLoggedIn == null) {
-      pathName = RouteData.unkownRoute.name;
-      isError = true;
-    } else if (isLoggedIn == false) {
-      pathName = RouteData.login.name;
-      isError = false;
-    } else if (pathName == null || pathName!.isEmpty) {
-      pathName = RouteData.home.name;
-      isError = false;
-    }
-
     notifyListeners();
   }
 }
