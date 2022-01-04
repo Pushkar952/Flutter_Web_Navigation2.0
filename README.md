@@ -13,7 +13,7 @@
 
 ## Author
 
-👤 **Cagatay Ulusoy**
+👤 **Pushkat Kumar**
 
 - Twitter: [@95Pushkar](https://twitter.com/95Pushkar)
 - Github: [@Pushkar952](https://github.com/Pushkar952)
