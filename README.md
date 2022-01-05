@@ -22,6 +22,22 @@ protected routes along with params.
 
 ![Param.gif](screenshots/Param.gif)
 
+  <h2 align="center">Navigator2.0</h2>
+
+Navigator 2.0 uses a declarative style. Understanding Navigator 2.0 involves understanding a few of its concepts such as:
+
+## Router: A class that manages opening and closing pages of an application
+
+## RouteInformationParser: An abstract class used by the Router‘s widget to parse route information into a configuration
+
+## RouteInformationProvider: An abstract class that provides route information for the Router‘s widget
+
+## RouterDelegate: An abstract class used by the Router‘s widget to build and configure a navigating widget
+
+## BackButtonDispatcher: Reports to a Router when the user taps the back button on platforms that support back buttons (such as Android)
+
+## TransitionDelegate: The delegate that decides how pages transition in or out of the screen when it’s added or removed.
+
 ## Author
 
 👤 **Pushkar Kumar**
