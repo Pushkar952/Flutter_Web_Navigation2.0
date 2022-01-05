@@ -14,7 +14,6 @@ enum RouteData {
 
   profile,
   login,
-  splash,
   home,
   more,
   settings

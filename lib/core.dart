@@ -4,7 +4,6 @@ export 'services/split_route_params.dart';
 
 //Screens
 export 'screens/unknown.dart';
-export 'screens/splash_screen.dart';
 export 'screens/login.dart';
 export 'screens/main_screen.dart';
 

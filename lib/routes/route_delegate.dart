@@ -6,13 +6,15 @@ import '../core.dart';
 class AppRouterDelegate extends RouterDelegate<RoutePath>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<RoutePath> {
   static final AppRouterDelegate _instance = AppRouterDelegate._();
-  factory AppRouterDelegate() => _instance;
-
-  AppRouterDelegate._();
+  bool? isLoggedIn;
   String? pathName;
   bool isError = false;
 
-  bool? isLoggedIn;
+  factory AppRouterDelegate({bool? isLoggedIn}) {
+    _instance.isLoggedIn = isLoggedIn;
+    return _instance;
+  }
+  AppRouterDelegate._();
 
   /// Keeps the app stack
   late List<Page> _stack = [];
@@ -50,14 +52,6 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
         ),
       ];
 
-  /// Splash stack
-  List<Page> get _splashStack => [
-        const MaterialPage(
-          key: ValueKey('splash'),
-          child: SplashScreen(),
-        ),
-      ];
-
   /// UnKnownRoute Stack
   List<Page> get _unknownRoute => [
         const MaterialPage(
@@ -68,11 +62,7 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
 
   @override
   Widget build(BuildContext context) {
-    if (pathName == null ||
-        pathName == RouteData.splash.name ||
-        isLoggedIn == null) {
-      _stack = _splashStack;
-    } else if (isLoggedIn == true) {
+    if (isLoggedIn == true) {
       _stack = _appStack;
     } else if ((isLoggedIn == false)) {
       _stack = _authStack;
@@ -96,12 +86,8 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
   /// setNewRoutePath is called when a new route has been pushed to the application.
   @override
   Future<void> setNewRoutePath(RoutePath configuration) async {
-    String _user = await HiveDataStorageService.getUser();
-    if (_user.isNotEmpty) {
-      isLoggedIn = true;
-    } else {
-      isLoggedIn = false;
-    }
+    bool isLoggedIn = await HiveDataStorageService.getUser();
+
     pathName = configuration.pathName;
 
     if (configuration.isOtherPage) {
