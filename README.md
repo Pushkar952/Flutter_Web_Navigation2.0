@@ -11,9 +11,20 @@
     </a>
 </p>
 
+The github repository consist of a working example of flutter web routing with private and
+protected routes along with params.
+
+  <h2 align="center">Auth- Private and Protected Routes</h2>
+
+![Auth.gif](screenshots/Auth.gif)
+
+  <h2 align="center">Routes with custom params</h2>
+
+![Param.gif](screenshots/Param.gif)
+
 ## Author
 
-👤 **Pushkat Kumar**
+👤 **Pushkar Kumar**
 
 - Twitter: [@95Pushkar](https://twitter.com/95Pushkar)
 - Github: [@Pushkar952](https://github.com/Pushkar952)
