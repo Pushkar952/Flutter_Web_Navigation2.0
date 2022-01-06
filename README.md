@@ -18,7 +18,7 @@ protected routes along with params.
 
 <p>Navigator 2.0 uses a declarative style. Understanding Navigator 2.0 involves understanding a few of its concepts such as:</p>
 
-`Router:` A class that manages opening and closing pages of an application.
+**Router:** A class that manages opening and closing pages of an application.
 The Router widget gets the configuration from the RouteInformationParser and sends it to the RouterDelegate by calling its setNewRoutePath method and asks to the RouterDelegate to build a new Navigator widget according to the current app state.
 .
 
@@ -45,7 +45,7 @@ RouteInformationParser delegate parses the location field of the RouteInformatio
  parseRouteInformation()
 ```
 
-`RouteInformationProvider:` An abstract class that provides route information for the Router's widget.
+**RouteInformationProvider:** An abstract class that provides route information for the Router's widget.
 
 RouteInformationProvider receives the route name String (URL) from the OS.
 RouteInformationProvider generates RouteInformation instance from the route name and notifies the Router widget.
@@ -55,7 +55,7 @@ The Router widget gets the RouteInformation and passes it to the RouteInformatio
 
 The role of the RouterDelegate is providing the currentConfiguration to Router widget. Then the Router widget restores the RouteInformation with the help of its RouteInformationParser delegate.
 
-`BackButtonDispatcher:` Reports to a Router when the user taps the back button on platforms that support back buttons (such as Android).
+**BackButtonDispatcher:** Reports to a Router when the user taps the back button on platforms that support back buttons (such as Android).
 
 ```dart
 class BackButtonListener extends StatefulWidget {
@@ -93,7 +93,7 @@ class BackButtonListenerState extends State<BackButtonListener> {
 }
 ```
 
-`TransitionDelegate:` The delegate that decides how pages transition in or out of the screen when it's added or removed. However  in most use cases, DefaultTransitionDelegate does a good job with transitions. If you need to handle transitions between pages in customised way, you can create your own delegate by extending TransitionDelegate. </li>
+**TransitionDelegate:** The delegate that decides how pages transition in or out of the screen when it's added or removed. However  in most use cases, DefaultTransitionDelegate does a good job with transitions. If you need to handle transitions between pages in customised way, you can create your own delegate by extending TransitionDelegate. </li>
 
 <br>
   <h2 align="center">Auth- Private and Protected Routes</h2>
