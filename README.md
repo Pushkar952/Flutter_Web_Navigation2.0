@@ -106,6 +106,12 @@ class BackButtonListenerState extends State<BackButtonListener> {
 
 ![Param.gif](screenshots/Param.gif)
 <br>
+
+ <h2 align="center">Routes with custom transition</h2>
+
+![Custom_transition.gif](screenshots/Custom_transition.gif)
+<br>
+<br>
 <br>
 <br>
 
