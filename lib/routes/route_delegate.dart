@@ -16,6 +16,9 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
   }
   AppRouterDelegate._();
 
+  // A custom trasition delegate to overwrite the default animation.
+  TransitionDelegate transitionDelegate = CustomTransitionDelegate();
+
   /// Keeps the app stack
   late List<Page> _stack = [];
 
@@ -71,6 +74,7 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
     }
 
     return Navigator(
+      transitionDelegate: transitionDelegate,
       key: navigatorKey,
       pages: _stack,
       onPopPage: (route, result) {
