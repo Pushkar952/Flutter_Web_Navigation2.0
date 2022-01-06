@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_web_navigation/core.dart';
 
 class App extends StatelessWidget {
-  const App({Key? key}) : super(key: key);
+  final bool isLoggedIn;
+  const App({Key? key, required this.isLoggedIn}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -10,7 +11,7 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Navigation 2.0',
       routeInformationParser: RoutesInformationParser(),
-      routerDelegate: AppRouterDelegate(),
+      routerDelegate: AppRouterDelegate(isLoggedIn: isLoggedIn),
     );
   }
 }
