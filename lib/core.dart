@@ -12,6 +12,7 @@ export 'routes/route_path.dart';
 export 'routes/route_handeler.dart';
 export 'routes/route_delegate.dart';
 export 'routes/route_information_parser.dart';
+export 'routes/custom_transition_delegate.dart';
 
 //utils
 export 'utils/images.dart';
