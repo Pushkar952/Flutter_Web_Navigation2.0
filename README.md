@@ -60,7 +60,7 @@ The Router widget gets the RouteInformation and passes it to the RouteInformatio
 <li> RouterDelegate: An abstract class used by the Router‘s widget to build and configure a navigating widget. </li>
 <br>
 
-The role of the RouterDelegate in the flow 2 (Router to OS) is providing the currentConfiguration to Router widget. Then theRouter widget restores the RouteInformation with the help of its RouteInformationParser delegate.
+The role of the RouterDelegate is providing the currentConfiguration to Router widget. Then the Router widget restores the RouteInformation with the help of its RouteInformationParser delegate.
 <br>
 
 <li> BackButtonDispatcher: Reports to a Router when the user taps the back button on platforms that support back buttons (such as Android). </li>
