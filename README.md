@@ -103,7 +103,7 @@ If you wanna try the app, here you go:
 
 https://finaldemo-89e12.web.app
 
-Please share feedback and if any enhancements are requiredRaised fist.
+Please share feedback and if any enhancements are required.
 <br><br>
 
   <h2 align="center">Auth- Private and Protected Routes</h2>
