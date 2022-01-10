@@ -97,6 +97,15 @@ class BackButtonListenerState extends State<BackButtonListener> {
 [<h3><b>TransitionDelegate:</b></h3>](./lib/routes/custom_transition_delegate.dart) The delegate that decides how pages transition in or out of the screen when it's added or removed. However  in most use cases, DefaultTransitionDelegate does a good job with transitions. If you need to handle transitions between pages in customised way, you can create your own delegate by extending TransitionDelegate. </li>
 
 <br>
+  <h2 align="center">Demo link</h2>
+
+If you wanna try the app, here you go:
+
+https://finaldemo-89e12.web.app
+
+Please share feedback and if any enhancements are requiredRaised fist.
+<br><br>
+
   <h2 align="center">Auth- Private and Protected Routes</h2>
 
 ![Auth.gif](screenshots/Auth.gif)
